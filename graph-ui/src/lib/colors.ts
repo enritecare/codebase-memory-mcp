@@ -1,17 +1,41 @@
 /* Node label → color mapping for sidebar/tooltips (structural meaning) */
 
 const LABEL_COLORS: Record<string, string> = {
+  // ── Project structure ─────────────────────────────
   Project: "#e11d48",
-  Package: "#f97316",
-  Module: "#f97316",
-  Folder: "#22c55e",
-  File: "#3b82f6",
-  Class: "#a855f7",
-  Interface: "#a855f7",
-  Function: "#06b6d4",
-  Method: "#06b6d4",
-  Route: "#eab308",
-  Variable: "#64748b",
+  Package: "#94a3b8",
+  Module:  "#94a3b8",
+  Folder:  "#64748b",
+  File:    "#475569",
+
+  // ── UI Layer (Salesforce front-end) ───────────────
+  LWCComponent:    "#f97316",   // orange
+  FlexiPage:       "#fb923c",   // lighter orange
+  LightningPageType: "#fbbf24", // amber
+
+  // ── Apex code ─────────────────────────────────────
+  Class:     "#a855f7",   // purple  (general Apex)
+  Interface: "#c084fc",   // lighter purple
+  Enum:      "#d946ef",   // fuchsia
+
+  // ── fflib layers ──────────────────────────────────
+  Service:   "#06b6d4",   // cyan
+  Domain:    "#0ea5e9",   // sky blue
+  Selector:  "#3b82f6",   // blue
+
+  // ── Data model ────────────────────────────────────
+  SObject:      "#22c55e",   // green  (schema table)
+  SObjectField: "#4ade80",   // lighter green (schema column)
+
+  // ── Code internals ────────────────────────────────
+  Function: "#2dd4bf",   // teal
+  Method:   "#2dd4bf",   // teal
+  Field:    "#64748b",   // slate
+  Variable: "#475569",   // darker slate
+
+  // ── Other ─────────────────────────────────────────
+  Route:   "#eab308",
+  Section: "#475569",
 };
 
 const DEFAULT_COLOR = "#94a3b8";

@@ -49,6 +49,15 @@ export function GraphTab({ project }: GraphTabProps) {
   const [enabledLabels, setEnabledLabels] = useState<Set<string>>(new Set());
   const [enabledEdgeTypes, setEnabledEdgeTypes] = useState<Set<string>>(new Set());
 
+  /* Labels hidden by default — true noise with no architectural value */
+  const HIDDEN_BY_DEFAULT = new Set([
+    "Module",       // redundant — every .cls Module has a Class node
+    "Folder",       // filesystem structure only
+    "Field",        // 9k+ class-level constants/fields — toggle on for detail
+    "SObjectField", // 7k+ schema columns — toggle on when inspecting data model
+    "Variable", "Section", "Branch", "Decorator", "Channel",
+  ]);
+
   /* Initialize filters when data loads */
   useEffect(() => {
     if (!data) return;
@@ -59,7 +68,8 @@ export function GraphTab({ project }: GraphTabProps) {
       for (const e of lp.edges) types.add(e.type);
       for (const e of lp.cross_edges) types.add(e.type);
     }
-    setEnabledLabels(labels);
+    // Default: show architectural labels only; user can toggle noisy ones back on
+    setEnabledLabels(new Set([...labels].filter((l) => !HIDDEN_BY_DEFAULT.has(l))));
     setEnabledEdgeTypes(types);
   }, [data]);
 
