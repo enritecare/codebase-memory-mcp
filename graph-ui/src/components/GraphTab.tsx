@@ -49,12 +49,16 @@ export function GraphTab({ project }: GraphTabProps) {
   const [enabledLabels, setEnabledLabels] = useState<Set<string>>(new Set());
   const [enabledEdgeTypes, setEnabledEdgeTypes] = useState<Set<string>>(new Set());
 
-  /* Labels hidden by default — true noise with no architectural value */
+  /* Labels hidden by default — toggle on to drill into detail */
   const HIDDEN_BY_DEFAULT = new Set([
+    "Method",       // 26k nodes — CALLS_CLASS edges show class-level connections without these
+    "Function",     // 2k JS functions — noisy at architecture level
     "Module",       // redundant — every .cls Module has a Class node
     "Folder",       // filesystem structure only
-    "Field",        // 9k+ class-level constants/fields — toggle on for detail
-    "SObjectField", // 7k+ schema columns — toggle on when inspecting data model
+    "Field",        // 9k+ class-level constants/fields
+    "SObjectField", // 7k+ schema columns — toggle on for data model detail
+    "File",         // raw filesystem nodes
+    "Doc",          // 1k+ help articles — toggle on to see doc↔code links
     "Variable", "Section", "Branch", "Decorator", "Channel",
   ]);
 

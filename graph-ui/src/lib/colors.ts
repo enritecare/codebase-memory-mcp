@@ -33,6 +33,9 @@ const LABEL_COLORS: Record<string, string> = {
   Field:    "#64748b",   // slate
   Variable: "#475569",   // darker slate
 
+  // ── Documentation ─────────────────────────────────
+  Doc: "#f59e0b",   // amber — help articles / guides
+
   // ── Other ─────────────────────────────────────────
   Route:   "#eab308",
   Section: "#475569",
