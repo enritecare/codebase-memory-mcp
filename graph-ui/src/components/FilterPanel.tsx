@@ -7,9 +7,11 @@ interface FilterPanelProps {
   enabledLabels: Set<string>;
   enabledEdgeTypes: Set<string>;
   showLabels: boolean;
+  hideFflib: boolean;
   onToggleLabel: (label: string) => void;
   onToggleEdgeType: (type: string) => void;
   onToggleShowLabels: () => void;
+  onToggleHideFflib: () => void;
   onEnableAll: () => void;
   onDisableAll: () => void;
 }
@@ -19,9 +21,11 @@ export function FilterPanel({
   enabledLabels,
   enabledEdgeTypes,
   showLabels,
+  hideFflib,
   onToggleLabel,
   onToggleEdgeType,
   onToggleShowLabels,
+  onToggleHideFflib,
   onEnableAll,
   onDisableAll,
 }: FilterPanelProps) {
@@ -109,6 +113,24 @@ export function FilterPanel({
           {showLabels && <span className="text-primary text-[9px]">✓</span>}
         </span>
         Show labels
+      </button>
+
+      {/* Hide fflib framework toggle — collapses fflib_* base classes/interfaces
+          from the view (kept in the graph for resolution). Keeps your Domain/
+          Selector classes + interface impls; drops hundreds of framework edges. */}
+      <button
+        onClick={onToggleHideFflib}
+        title="Hide fflib_* framework classes/interfaces (still in the graph, just not drawn)"
+        className={`inline-flex items-center gap-1.5 text-[11px] font-medium transition-all ${
+          hideFflib ? "text-primary" : "text-foreground/30"
+        }`}
+      >
+        <span className={`w-3.5 h-3.5 rounded border flex items-center justify-center transition-all ${
+          hideFflib ? "border-primary bg-primary/20" : "border-foreground/15"
+        }`}>
+          {hideFflib && <span className="text-primary text-[9px]">✓</span>}
+        </span>
+        Hide fflib framework
       </button>
     </div>
   );

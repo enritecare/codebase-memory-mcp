@@ -41,6 +41,7 @@ export function GraphTab({ project }: GraphTabProps) {
   const [selectedNode, setSelectedNode] = useState<GraphNode | null>(null);
   const [cameraTarget, setCameraTarget] = useState<CameraTarget | null>(null);
   const [showLabels, setShowLabels] = useState(true);
+  const [hideFflib, setHideFflib] = useState(true); // hide fflib_* framework nodes from the view (kept in graph)
   const [leftWidth, setLeftWidth] = useState(() => loadWidth("cbm-left-w", 260));
   const [rightWidth, setRightWidth] = useState(() => loadWidth("cbm-right-w", 280));
   const limitNotice = formatGraphLimitNotice(data);
@@ -81,7 +82,9 @@ export function GraphTab({ project }: GraphTabProps) {
   const filteredData: GraphData | null = useMemo(() => {
     if (!data) return null;
 
-    const nodes = data.nodes.filter((n) => enabledLabels.has(n.label));
+    const nodes = data.nodes.filter(
+      (n) => enabledLabels.has(n.label) && !(hideFflib && n.name.startsWith("fflib_")),
+    );
     const nodeIds = new Set(nodes.map((n) => n.id));
     const edges = data.edges.filter(
       (e) =>
@@ -91,7 +94,9 @@ export function GraphTab({ project }: GraphTabProps) {
     );
 
     const linked_projects = data.linked_projects?.map((lp) => {
-      const lpNodes = lp.nodes.filter((n) => enabledLabels.has(n.label));
+      const lpNodes = lp.nodes.filter(
+        (n) => enabledLabels.has(n.label) && !(hideFflib && n.name.startsWith("fflib_")),
+      );
       const lpIds = new Set(lpNodes.map((n) => n.id));
       const lpEdges = lp.edges.filter(
         (e) =>
@@ -105,7 +110,7 @@ export function GraphTab({ project }: GraphTabProps) {
     });
 
     return { nodes, edges, total_nodes: data.total_nodes, linked_projects };
-  }, [data, enabledLabels, enabledEdgeTypes]);
+  }, [data, enabledLabels, enabledEdgeTypes, hideFflib]);
 
   useEffect(() => {
     if (project) {
@@ -256,9 +261,11 @@ export function GraphTab({ project }: GraphTabProps) {
           enabledLabels={enabledLabels}
           enabledEdgeTypes={enabledEdgeTypes}
           showLabels={showLabels}
+          hideFflib={hideFflib}
           onToggleLabel={toggleLabel}
           onToggleEdgeType={toggleEdgeType}
           onToggleShowLabels={() => setShowLabels((v) => !v)}
+          onToggleHideFflib={() => setHideFflib((v) => !v)}
           onEnableAll={enableAll}
           onDisableAll={disableAll}
         />
